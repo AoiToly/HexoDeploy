@@ -3,7 +3,7 @@ name: Hexo Deploy
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: '18'
 
       - name: Setup Hexo
         env:
@@ -30,8 +30,8 @@ jobs:
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          git config --global user.email "john@doe.com"
-          git config --global user.name "John Doe"
+          git config --global user.email "1845056786@qq.com"
+          git config --global user.name "AoiToly"
           npm install hexo-cli -g
           npm install
 
