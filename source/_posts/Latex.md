@@ -1,3 +1,9 @@
+---
+title: Latex
+---
+
+
+
 [texLive](https://www.tug.org/texlive/acquire-ios.html)
 
 线上编辑器：overleaf

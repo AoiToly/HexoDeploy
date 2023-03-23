@@ -1,3 +1,5 @@
+title: OpenGL
+
 
 
 # 以下为入门模块
@@ -57,7 +59,7 @@ glfwTerminate();							//正确释放/删除之前的分配的左右资源
 
 有些着色器允许开发者自己配置，这就允许我们用自己写的着色器来替换默认的。这样我们就可以更细致地控制图形渲染管线中的特定部分了，而且因为它们运行在GPU上，所以它们可以给我们节约宝贵的CPU时间。OpenGL着色器是用OpenGL着色器语言(OpenGL Shading Language, GLSL)写成的，在下一节中我们再花更多时间研究它。
 
-<img src="OpenGL.assets/pipeline.png" alt="img" style="zoom:67%;" />
+<img src="../images/OpenGL.assets/pipeline.png" alt="image-pipeline" style="zoom:67%;" />
 
 在图形渲染的过程中，最少需要顶点着器和片段着色器两个着色器
 
@@ -230,7 +232,7 @@ glDeleteShader(fragmentShader);
 
 ## 链接顶点属性
 
- <img src="OpenGL.assets/vertex_attribute_pointer.png" alt="img" style="zoom:67%;" />
+ <img src="../images/OpenGL.assets/vertex_attribute_pointer.png" alt="img" style="zoom:67%;" />
 
 - 位置数据被储存为32位（4字节）浮点值。
 - 每个位置包含3个这样的值。
@@ -259,7 +261,7 @@ glEnableVertexAttribArray(0);
 - 通过glVertexAttribPointer设置的顶点属性配置。
 - 通过glVertexAttribPointer调用与顶点属性关联的顶点缓冲对象。
 
- <img src="OpenGL.assets/vertex_array_objects.png" alt="img" style="zoom:67%;" />
+ <img src="../images/OpenGL.assets/vertex_array_objects.png" alt="img" style="zoom:67%;" />
 
 创建一个VAO和创建一个VBO很类似：
 
@@ -296,7 +298,7 @@ glBindVertexArray(VAO);
 glDrawArrays(GL_TRIANGLES, 0, 3);
 ```
 
-![img](OpenGL.assets/hellotriangle.png)
+![img](../images/OpenGL.assets/hellotriangle.png)
 
 完整的程序源码可以在[这里](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/2.1.hello_triangle/hello_triangle.cpp)找到。
 
@@ -383,7 +385,7 @@ glBindVertexArray(0);
 
 运行程序会获得下面这样的图片的结果。左侧图片看应该起来很熟悉，而右侧的则是使用线框模式(Wireframe Mode)绘制的。线框矩形可以显示出矩形的确是由两个三角形组成的。
 
-![img](OpenGL.assets/hellotriangle2.png)
+![img](../images/OpenGL.assets/hellotriangle2.png)
 
 **线框模式(Wireframe Mode)**
 
@@ -594,7 +596,7 @@ void main()
 
 因为我们添加了另一个顶点属性，并且更新了VBO的内存，我们就必须重新配置顶点属性指针。更新后的VBO内存中的数据现在看起来像这样：
 
-![img](OpenGL.assets/vertex_attribute_pointer_interleaved.png)
+![img](../images/OpenGL.assets/vertex_attribute_pointer_interleaved.png)
 
 知道了现在使用的布局，我们就可以使用glVertexAttribPointer函数更新顶点格式，
 
@@ -795,7 +797,7 @@ float texCoords[] = {
 | GL_CLAMP_TO_EDGE   | 纹理坐标会被约束在0到1之间，超出的部分会重复纹理坐标的边缘，产生一种边缘被拉伸的效果。 |
 | GL_CLAMP_TO_BORDER | 超出的坐标为用户指定的边缘颜色。                             |
 
- ![img](OpenGL.assets/texture_wrapping.png)
+ ![img](../images/OpenGL.assets/texture_wrapping.png)
 
 指定环绕方式代码：
 
@@ -816,9 +818,9 @@ glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
 ### 纹理过滤
 
-GL_NEAREST（也叫邻近过滤，Nearest Neighbor Filtering）是OpenGL默认的纹理过滤方式。当设置为GL_NEAREST的时候，OpenGL会选择中心点最接近纹理坐标的那个像素。下图中你可以看到四个像素，加号代表纹理坐标。左上角那个纹理像素的中心距离纹理坐标最近，所以它会被选择为样本颜色： ![img](OpenGL.assets/filter_nearest.png)
+GL_NEAREST（也叫邻近过滤，Nearest Neighbor Filtering）是OpenGL默认的纹理过滤方式。当设置为GL_NEAREST的时候，OpenGL会选择中心点最接近纹理坐标的那个像素。下图中你可以看到四个像素，加号代表纹理坐标。左上角那个纹理像素的中心距离纹理坐标最近，所以它会被选择为样本颜色： ![img](../images/OpenGL.assets/filter_nearest.png)
 
-GL_LINEAR（也叫线性过滤，(Bi)linear Filtering）它会基于纹理坐标附近的纹理像素，计算出一个插值，近似出这些纹理像素之间的颜色。一个纹理像素的中心距离纹理坐标越近，那么这个纹理像素的颜色对最终的样本颜色的贡献越大。下图中你可以看到返回的颜色是邻近像素的混合色： ![img](OpenGL.assets/filter_linear.png)
+GL_LINEAR（也叫线性过滤，(Bi)linear Filtering）它会基于纹理坐标附近的纹理像素，计算出一个插值，近似出这些纹理像素之间的颜色。一个纹理像素的中心距离纹理坐标越近，那么这个纹理像素的颜色对最终的样本颜色的贡献越大。下图中你可以看到返回的颜色是邻近像素的混合色： **![img](../images/OpenGL.assets/filter_linear.png)**
 
 当进行放大(Magnify)和缩小(Minify)操作的时候可以设置纹理过滤的选项，比如你可以在纹理被缩小的时候使用邻近过滤，被放大时使用线性过滤。我们需要使用glTexParameter*函数为放大和缩小指定过滤方式。这段代码看起来会和纹理环绕方式的设置很相似：
 
@@ -939,7 +941,7 @@ float vertices[] = {
 };
 ```
 
-![img](OpenGL.assets/vertex_attribute_pointer_interleaved_textures.png)
+![img](../images/OpenGL.assets/vertex_attribute_pointer_interleaved_textures.png)
 
 ```glsl
 glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
@@ -992,7 +994,7 @@ glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 效果如下：
 
-![img](OpenGL.assets/textures2.png)
+![img](../images/OpenGL.assets/textures2.png)
 
 ### 纹理单元
 
@@ -1111,7 +1113,7 @@ glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
 将坐标转化为屏幕坐标的过程：
 
-![coordinate_systems](OpenGL.assets/coordinate_systems.png)
+![coordinate_systems](../images/OpenGL.assets/coordinate_systems.png)
 
 1. 局部坐标是对象相对于局部原点的坐标，也是物体起始的坐标。
 2. 下一步是将局部坐标变换为世界空间坐标，世界空间坐标是处于一个更大的空间范围的。这些坐标相对于世界的全局原点，它们会和其它物体一起相对于世界的原点进行摆放。
@@ -1159,7 +1161,7 @@ glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
 ### 正射投影
 
- ![orthographic projection frustum](OpenGL.assets/orthographic_frustum.png)
+ ![orthographic projection frustum](../images/OpenGL.assets/orthographic_frustum.png)
 
 ```c++
 glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
@@ -1181,13 +1183,13 @@ glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)width/(float)heigh
 
 参数三、四：设置了平截头体的**近**和**远**平面。我们通常设置近距离为0.1f，而远距离设为100.0f。所有在近平面和远平面内且处于平截头体内的顶点都会被渲染。
 
-<img src="OpenGL.assets/perspective_frustum.png" alt=" perspective_frustum" style="zoom:50%;" />
+<img src="../images/OpenGL.assets/perspective_frustum.png" alt=" perspective_frustum" style="zoom:50%;" />
 
 ### 把它们组合到一起
 
 我们为上述的每一个步骤都创建了一个变换矩阵：模型矩阵、观察矩阵和投影矩阵。一个顶点坐标将会根据以下过程被变换到裁剪坐标：
 
-<img src="OpenGL.assets/image-20211014110811181.png" alt="image-20211014110811181" style="zoom:100%;" />
+<img src="../images/OpenGL.assets/image-20211014110811181.png" alt="image-20211014110811181" style="zoom:100%;" />
 
 注意矩阵运算的顺序是相反的（记住我们需要从右往左阅读矩阵的乘法）。最后的顶点应该被赋值到顶点着色器中的gl_Position，OpenGL将会自动进行透视除法和裁剪。
 
@@ -1316,7 +1318,7 @@ OpenGL本身没有摄像机(Camera)的概念，但我们可以通过把场景中
 
 当我们讨论摄像机/观察空间(Camera/View  Space)的时候，是在讨论以摄像机的视角作为场景原点时场景中所有的顶点坐标：观察矩阵把所有的世界坐标变换为相对于摄像机位置与方向的观察坐标。要定义一个摄像机，我们需要它在世界空间中的位置、观察的方向、一个指向它右测的向量以及一个指向它上方的向量。细心的读者可能已经注意到我们实际上创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。
 
-![img](OpenGL.assets/camera_axes.png)
+![img](../images/OpenGL.assets/camera_axes.png)
 
 注意：摄像机的方向虽然是正的，但是实际指向的是z轴负半轴
 
@@ -1350,7 +1352,7 @@ glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
 
 使用矩阵的好处之一是如果你使用3个相互垂直（或非线性）的轴定义了一个坐标空间，你可以用这3个轴外加一个平移向量来创建一个矩阵，并且你可以用这个矩阵乘以任何向量来将其变换到那个坐标空间。这正是**LookAt**矩阵所做的，现在我们有了3个相互垂直的轴和一个定义摄像机空间的位置坐标，我们可以创建我们自己的LookAt矩阵了：
 
-<img src="OpenGL.assets/image-20211018194926535.png" alt="image-20211018194926535" style="zoom:80%;" />
+<img src="../images/OpenGL.assets/image-20211018194926535.png" alt="image-20211018194926535" style="zoom:80%;" />
 
 其中*R*是右向量，*U*是上向量，*D*是方向向量*P*是摄像机位置向量。注意，位置向量是相反的，因为我们最终希望把世界平移到与我们自身移动的相反方向。把这个LookAt矩阵作为观察矩阵可以很高效地把所有世界坐标变换到刚刚定义的观察空间。LookAt矩阵就像它的名字表达的那样：它会创建一个看着(Look at)给定目标的观察矩阵。
 
@@ -1448,13 +1450,13 @@ void processInput(GLFWwindow *window)
 
 欧拉角(Euler Angle)是可以表示3D空间中任何旋转的3个值，由莱昂哈德·欧拉(Leonhard Euler)在18世纪提出。一共有3种欧拉角：俯仰角(Pitch)、偏航角(Yaw)和滚转角(Roll)，下面的图片展示了它们的含义：
 
-![img](OpenGL.assets/camera_pitch_yaw_roll.png)
+![img](../images/OpenGL.assets/camera_pitch_yaw_roll.png)
 
 俯仰角是描述我们如何往上或往下看的角，可以在第一张图中看到。第二张图展示了偏航角，偏航角表示我们往左和往右看的程度。滚转角代表我们如何**翻滚**摄像机，通常在太空飞船的摄像机中使用。每个欧拉角都有一个值来表示，把三个角结合起来我们就能够计算3D空间中任何的旋转向量了。
 
 对于我们的摄像机系统来说，我们只关心俯仰角和偏航角，所以我们不会讨论滚转角。给定一个俯仰角和偏航角，我们可以把它们转换为一个代表新的方向向量的3D向量。俯仰角和偏航角转换为方向向量的处理需要一些三角学知识，我们先从最基本的情况开始：
 
-![img](OpenGL.assets/camera_triangle.png)
+![img](../images/OpenGL.assets/camera_triangle.png)
 
 如果我们把斜边边长定义为1，我们就能知道邻边的长度是cos *x*/*h*=cos *x*/1=cos *x*
 
@@ -1462,7 +1464,7 @@ void processInput(GLFWwindow *window)
 
 。这样我们获得了能够得到x和y方向长度的通用公式，它们取决于所给的角度。我们使用它来计算方向向量的分量：
 
-![img](OpenGL.assets/camera_pitch.png)
+![img](../images/OpenGL.assets/camera_pitch.png)
 
 这个三角形看起来和前面的三角形很像，所以如果我们想象自己在xz平面上，看向y轴，我们可以基于第一个三角形计算来计算它的长度/y方向的强度(Strength)（我们往上或往下看多少）。从图中我们可以看到对于一个给定俯仰角的y值等于sin *θ*
 
@@ -1481,7 +1483,7 @@ direction.z = cos(glm::radians(pitch));
 
 看看我们是否能够为偏航角找到需要的分量：
 
-![img](OpenGL.assets/camera_yaw.png)
+![img](../images/OpenGL.assets/camera_yaw.png)
 
 就像俯仰角的三角形一样，我们可以看到x分量取决于`cos(yaw)`的值，z值同样取决于偏航角的正弦值。把这个加到前面的值中，会得到基于俯仰角和偏航角的方向向量：
 
@@ -1983,7 +1985,7 @@ glm::vec3 coral(1.0f, 0.5f, 0.31f);
 
 现实生活中，我们所看到的某一物体的颜色并不是这个物体真正拥有的颜色，而是它所反射的(reflected)的颜色，换句话说，就是不能被物体所吸收的颜色。
 
- <img src="OpenGL.assets/light_reflection.png" alt="img" style="zoom:80%;" />
+ <img src="../images/OpenGL.assets/light_reflection.png" alt="img" style="zoom:80%;" />
 
 由图可知，白色的阳光其实是所有可见颜色的集合，物体吸收了其中的大部分颜色，它仅反射了代表物体颜色的部分，被反射颜色的组合就是我们所感知到的颜色
 
