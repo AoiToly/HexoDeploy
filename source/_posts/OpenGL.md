@@ -1,7 +1,7 @@
+---
 title: OpenGL
-
-
-
+abbrlink: 38fdccb7
+---
 # 以下为入门模块
 
 # 你好，窗口

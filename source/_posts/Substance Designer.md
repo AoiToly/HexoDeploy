@@ -1,5 +1,6 @@
 ---
 title: Substance Designer
+abbrlink: 92515ac0
 ---
 
 

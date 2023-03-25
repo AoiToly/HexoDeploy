@@ -1,5 +1,6 @@
 ---
 title: Lua
+abbrlink: ee3c71cb
 ---
 
 

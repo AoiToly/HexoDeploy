@@ -1,5 +1,6 @@
 ---
 title: Latex
+abbrlink: cd177453
 ---
 
 
