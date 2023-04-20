@@ -172,55 +172,55 @@ $ ssh-keygen -t rsa -C "youremail@example.com"
 查看状态
 
 ```shell
-$git status
+$ git status
 ```
 
 查看修改内容
 
 ```shell
-$git diff <filename>
+$ git diff <filename>
 # 查看目标版本和工作区中某文件的区别
-$git diff Head -- <filename>
+$ git diff Head -- <filename>
 ```
 
 将文件添加到暂存区
 
 ```shell
-$git add <filename>
+$ git add <filename>
 ```
 
 将暂存区的内容提交到当前分支
 
 ```shell
-$git commit -m "本次提交说明"
+$ git commit -m "本次提交说明"
 ```
 
 查看文件修改的历史纪录
 
 ```shell
-$git log
+$ git log
 # 可以用--pretty=oneline参数将输出内容简化
-$git log --pretty=oneline
+$ git log --pretty=oneline
 ```
 
 回退仓库版本，注意`HEAD`表示当前版本，`HEAD^`表示上一个版本，`HEAD^^`: 上上一个版本，`HEAD~100` : 往上100个版本
 
 ```shell
 # 回退到上一个版本
-$git reset --hard HEAD^
+$ git reset --hard HEAD^
 ```
 
 回退版本之后，如果还想回到新版本，可以在命令行窗口中找到目标版本的`commit id`
 
 ```shell
 # 输入版本号的前几位即可，没必要写全
-$git reset --hard 1094a
+$ git reset --hard 1094a
 ```
 
 如果想回到新版本时，找不到新版本号了，可以用以下命令找到你输入的每一次命令
 
 ```shell
-$git reflog
+$ git reflog
 ```
 
 丢弃工作区更改
@@ -234,12 +234,89 @@ $ git checkout -- <filename>
 撤销暂存区的修改
 
 ```shell
-$git reset HEAD <filename>
+$ git reset HEAD <filename>
 ```
 
 删除工作区文件
 
 ```shell
 $ git rm <filename>
+```
+
+将远程库克隆到本地
+
+```shell
+$ git clone <address>
+```
+
+将本地仓库和远程仓库关联，远程库的名字叫origin
+
+```shell
+$ git remote add origin <remote repo address>
+```
+
+将本地库推送到远程库
+
+```shell
+# 第一次推送加上-u，将本地的master分支和远程的master分支关联
+$ git push -u origin master
+```
+
+查看远程库信息
+
+```shell
+$ git remote -v
+```
+
+删除远程库，此处的删除指接触本地和远程的绑定关系
+
+```shell
+$ git remote rm origin
+```
+
+将远程主机（默认origin）的分支与本地的分支合并
+
+```shell
+git pull <远程主机名> <远程分支名>:<本地分支名>
+```
+
+创建分支
+
+```shell
+$ git branch <branch name>
+```
+
+切换分支
+
+```shell
+# 创建并切换到新的分支
+$ git switch -c <branch name>
+# 直接切换到目标分支
+$ git switch master
+$ git checkout <branch name>
+```
+
+可以将上述两条命令合并成一条，即创建+切换
+
+```shell
+$ git checkout -b dev
+```
+
+查看当前分支
+
+```shell
+$ git branch
+```
+
+合并目标分支到当前分支
+
+```shell
+$ git merge <branch name>
+```
+
+删除分支
+
+```shell
+$ git branch -d <branch name>
 ```
 

@@ -1,3 +1,6 @@
+---
+abbrlink: '0'
+---
 # Apex 开镜灵敏度统一
 
 参考教程：[「APEX」超简单的统一开镜灵敏度 让所有倍镜拉枪统一手感_APEX英雄_教程 (bilibili.com)](https://www.bilibili.com/video/BV1cg411K7dt/?spm_id_from=333.337.search-card.all.click&vd_source=b15701b391138cb0fc7af5c3cf24873d)
