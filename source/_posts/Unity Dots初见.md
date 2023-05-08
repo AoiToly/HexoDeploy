@@ -24,3 +24,7 @@ The Entities package isn't listed in the Package Manager, even if you've enabled
 com.unity.entities
 
 com.unity.rendering.hybrid
+
+### Creating a Build Configuartion asset
+
+Assets > Create > Build Configuration > Empty Build Configuration
