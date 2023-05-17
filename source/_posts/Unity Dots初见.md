@@ -2,6 +2,8 @@
 
 ## Installation and Setup
 
+**注意！！！0.51版本是preview版本，并且在预研过程中发现0.51版本有着暂时不可避免并且未知原因的恶性bug，这一部分内容可以忽略**
+
 ### Unity Editor version
 
 2020.3.30+ or 2021.3.4+ with entities version: 0.51
@@ -25,12 +27,14 @@ The Entities package isn't listed in the Package Manager, even if you've enabled
 com.unity.entities
 com.unity.collections
 com.unity.jobs
-com.unity.hybrid.renderer
+com.unity.rendering.hybrid
 ```
 
 
 
 ## 0.51版本官方案例笔记
+
+**注意！！！0.51版本是preview版本，并且在预研过程中发现0.51版本有着暂时不可避免并且未知原因的恶性bug，这一部分内容可以忽略**
 
 ### HelloCube / 1. ForEach
 
@@ -245,7 +249,7 @@ using UnityEngine;
 [AddComponentMenu("DOTS Samples/SpawnFromMonoBehaviour/Spawner")]
 public class Spawner_FromMonoBehaviour : MonoBehaviour
 {
-    // Prefab上应该要挂载做什么的脚本
+    // Prefab上应该要挂载组件的脚本
     public GameObject Prefab;
     public int CountX = 100;
     public int CountY = 100;
@@ -275,3 +279,159 @@ public class Spawner_FromMonoBehaviour : MonoBehaviour
     }
 }
 ```
+
+## Entities 1.0.8版本配置
+
+### 参考网址
+
+官方文档：https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/getting-started-installation.html
+
+官方案例GitHub仓库：https://github.com/Unity-Technologies/EntityComponentSystemSamples/tree/master
+
+### Unity Editor Version
+
+2022.2.15f1+
+
+### IDE Support
+
+- Visual Studio 2022+
+- Rider 2021.3.3+
+
+### Package
+
+- com.unity.entities
+
+- com.unity.jobs
+
+- com.unity.entities.graphics
+
+- com.unity.collections
+
+- com.unity.mathematics
+
+可以直接加入Graphics和Jobs，其他内容会自动加入
+
+### Domain Reload setting
+
+To get the best performance in your Entities project, you should disable Unity's [Domain Reload](https://docs.unity3d.com/Manual/ConfigurableEnterPlayMode.html) setting. To do this, go to **Edit > Project Settings > Editor** menu, and enable the **Enter Play Mode Options** setting, but leave the **Reload Domain** and **Reload Scene** boxes disabled.
+
+## ECS
+
+**以下主要是一些参考了其他资料的较为主观的个人理解**
+
+ECS即Entity Component System架构，简单来说就是把实体、组件数据、方法三者分离开来，并且在这三个模块内部避免直接的数据通信。
+
+所谓实体其实就是一个ID，同时标记了这个ID的entity有哪些Component，而System则表示方法。不过与其说Entity和Component的关系是has，倒不如说是and，因为在数据查找的过程中往往并不是根据Entity定位的Component，而是根据Component去定位Entity，甚至可以说，比起Entity，System更关心拥有满足要求的Component集的与其关联的整个Component集。
+
+ECS相比于传统的OOP有着结构简单清晰、易于扩展、易于优化的特点。
+
+OOP把属性和方法封装在一个类中，强调每一个类的行为以及类与类之间的关系，如继承多态、管理者，它更为强调程序员对每个类的认知和理解，举个例子，我们在这里定义一个Class Person，但是可能程序员A认为衣服clothes是Person的一个属性，但程序员B认为一个Person就应该是赤身裸体的不该穿衣服，衣服不是人的组成部分，那么在这个时候就会出现认知上的差别，因此OOP部分依赖于每个人对Person的定义和理解，OOP架构虽然清晰易读，符合我们常用的思维方式，但是它不可避免地会出现个人偏主观的解读以及人与人之间的认知差异的问题，另外，由于OOP继承多态的特性，也导致了我们在软件工程架构中难以规避的多重继承的问题，导致代码的可扩展性低，维护困难。
+
+而ECS用组合的方式代替继承，弱化了实体之间的关联性，并且每个系统之间不能进行直接通信，这会使得系统与系统之间分离开来，这更方便与代码的扩展和维护，并且由于缺少了错从复杂的调用关系，ECS会更利于多线程的使用。我的理解是，ECS会尽可能少的去使用引用类型来保持每个独立系统的独立性，如果系统和系统之间要进行数据传递，可以用单例Component来实现，这在系统实现的过程中是难以避免的，例如在OW中使用到的单例Component就占了40%，因此对于ECS而言重要的并不是对于每个类的理解，而是更为强调对于每个Component的理解。
+
+## Unity Dots
+
+[Unity Entities 1.0.8 官方文档](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/systems-isystem.html)
+
+### Entity 概念
+
+在Unity中，`Entity`实际上只拥有两个整型数值：`Index`和`Version`，`Index`即每个`Entity`的ID，而`Version`用于帮助程序员去侦测每个实体的变化
+
+`Entity`集合被存储在`World`中，每个`World`会有一个`EntityManager`去管理，它可以管理它所在世界的`Entity`的创建、销毁、修改数据等操作
+
+| **Method**        | **Description**                                              |
+| :---------------- | :----------------------------------------------------------- |
+| `CreateEntity`    | Creates a new entity.                                        |
+| `Instantiate`     | Copies an existing entity and creates a new entity from that copy. |
+| `DestroyEntity`   | Destroys an existing entity.                                 |
+| `AddComponent`    | Adds a component to an existing entity.                      |
+| `RemoveComponent` | Removes a component from an existing entity.                 |
+| `GetComponent`    | Retrieves the value of an entity's component.                |
+| `SetComponent`    | Overwrites the value of an entity's component.               |
+
+### Component概念
+
+Component即Entity的组件，存储了具体的数据，它继承了`IComponentData`或`ISharedComponentData`等接口，这些接口并没有方法要实现，它们起到一个标记作用。在Unity中可以通过代码和Baker类将`GameObject`转化为`Entity`。想要创建`Unmanaged component`可以用`struct`，而想要创建`Managed component`可以用`class`。 
+
+其中`Managed Component`虽然能做的操作很多很方便，但也有以下的限制
+
+- You can't access them in [jobs](https://docs.unity3d.com/2022.2/Documentation/Manual/JobSystem.html).
+- You can't use them in [Burst](https://docs.unity3d.com/Packages/com.unity.burst@latest) compiled code.
+- They require garbage collection.
+- They must include a constructor with no parameters for serialization purposes.
+
+### System 概念
+
+在Unity Dots中主要有`ISystem`和`SystemBase`，`ISystem`主要负责访问未托管的数据，而`SystemBase`适合访问托管数据，另外`ISystem`能使用`Burst`，相比`SystemBase`会更快一些。`ISystem`接口和`SystemBase`基类各有三个方法可以被重写，分别是`OnUpdate`、`OnCreate`和`OnDestroy`，其中`OnUpdate`方法每一帧执行一次。
+
+| **Feature**                                                  | **ISystem compatibility** | **SystemBase compatibility** |
+| :----------------------------------------------------------- | :------------------------ | :--------------------------- |
+| Burst compile `OnCreate`, `OnUpdate`, and `OnDestroy`        | Yes                       | No                           |
+| Unmanaged memory allocated                                   | Yes                       | No                           |
+| GC allocated                                                 | No                        | Yes                          |
+| Can store managed data directly in system type               | No                        | Yes                          |
+| [Idiomatic `foreach`](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/systems-systemapi-query.html) | Yes                       | Yes                          |
+| [`Entities.ForEach`](https://docs.unity3d.com/Packages/com.unity.entities@1.0/api/Unity.Entities.SystemBase.Entities.html#Unity_Entities_SystemBase_Entities) | No                        | Yes                          |
+| [`Job.WithCode`](https://docs.unity3d.com/Packages/com.unity.entities@1.0/api/Unity.Entities.SystemBase.Job.html#Unity_Entities_SystemBase_Job) | No                        | Yes                          |
+| [`IJobEntity`](https://docs.unity3d.com/Packages/com.unity.entities@1.0/api/Unity.Entities.IJobEntity.html) | Yes                       | Yes                          |
+| [`IJobChunk`](https://docs.unity3d.com/Packages/com.unity.entities@1.0/api/Unity.Entities.IJobChunk.html) | Yes                       | Yes                          |
+| Supports inheritance                                         | No                        | Yes                          |
+
+每一个`System`只能对一个世界中的entities进行处理，默认情况下，Unity会自动创建每个`System`并且用[`System Group`](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/systems-update-order.html)来管理每个`System`，默认有三个`System Group`，分别是`InitializationSystemGroup`、`SimulationSystemGroup`和`PresentationSystemGroup`，默认情况下，一个`System`的`instance`被放在`SimulationSystemGroup`中。可以用`[UpdateInGroup]`这个`attribute`来重写这个`behavior`
+
+可以通过这玩意儿取消上述的自动创建的过程`#UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP`
+
+目前有4中`system`类型：
+
+- `SystemBase`：为managed system提供了一个基类
+- `ISystem`：为unmanaged system提供了一个基类
+- `EntityCommondBufferSystem`：Provides entity command buffer instances for other systems. This allows you to group [structural changes](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/concepts-structural-changes.html)（简单来说就是一些需要Unity重新组织chunk的操作） together to improve the performance of your application. 我的简单理解是，它给其他systems提供了一个命令缓冲区的实例，它可以统合管理structural changes，来方便代码管理。
+- `ComponentSystemGroup`：Provides a nested organization and update order for systems. 简而言之就是`SystemGroup`的基类，它是可嵌套的，并且主要负责管理system的更新顺序
+
+编辑器中的System标识：
+
+| **Icon**                                                     | **Represents**                                               |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| ![img](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/images/editor-system-group.png) | A system group                                               |
+| ![img](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/images/editor-system.png) | A system                                                     |
+| ![img](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/images/editor-system-start-step.png) | An entity command buffer system set to execute at the beginning of a system group with the [OrderFirst](https://docs.unity3d.com/Packages/com.unity.entities@1.0/api/Unity.Entities.UpdateInGroupAttribute.OrderFirst.html) argument. |
+| ![img](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/images/editor-system-end-step.png) | An entity command buffer system set to execute at the end of a system group with the [OrderLast](https://docs.unity3d.com/Packages/com.unity.entities@1.0/api/Unity.Entities.UpdateInGroupAttribute.OrderLast.html) argument. |
+
+### World 概念
+
+一个world就是大量的entities的集合，并且每个entity的ID只在它所存在的世界中是唯一的，在每个world中可以通过一个struct `EntityManager`来 创建、销毁、修改entity。每个world中的systems只能访问同一个世界中的entities，另外，同一个世界中用有相同component类型的entity一起存在一个`archtype`中，这个`archtype`决定了这些components是如何在内存中被组织的。
+
+默认情况下，进入Play mode的时候，unity会自动创建一个`World`的实例并给这个默认的世界增加每一个系统。
+
+### Archtype 概念
+
+一个archtype是一个world中所有具有相同components组合的entities集合的一个唯一表示符。当一个entity增加或删除一个component的时候，它所在world的`EntityManager`会把它转移给一个新的Archtype，如果不存在拥有同样组件组合的archtype，`EntityManager`会创建要给新的archtype
+
+**注意：改变entity结构的操作是十分占用资源的，所以不能频繁使用**
+
+archtype没有一个销毁的接口，只有在它所在的world被销毁时它才会被销毁
+
+所有拥有相同archtype的entities和components被存放在统一大小的内存块中，这些内存块被称为`chunk`，每个`chunk`只对应一个archtype，每个`chunk`有16KB的大小，并且每个`chunk`中可存的entity的数量取决于这个archtype中components的数量和大小。`chunk`已满且有新entity加入时，`EntityManager`会创建新的`chunk`，而当`chunk`中最后一个entity删除时，`EntityManager`会销毁该`chunk`。
+
+![image-20230517132204597](../images/Unity Dots初见.assets/image-20230517132204597.png)
+
+### Structural changes concepts
+
+导致Unity重新组织chunk内存或chunk中的内容的操作被称为structural changes，其主要包括：
+
+- 创建或销毁一个entity
+- 增加或删除组件
+- 设置一个shared component的值
+
+参考资料：
+
+[漫谈Entity Component System（ECS）](https://zhuanlan.zhihu.com/p/270927422)
+
+[浅谈Unity ECS（一）Uniy ECS基础概念介绍：面向未来的ECS](https://zhuanlan.zhihu.com/p/59879279)
+
+[Overwatch Gameplay Architecture and Netcode](https://link.zhihu.com/?target=https%3A//www.youtube.com/watch%3Fv%3DW3aieHjyNvw)
+
+[浅谈《守望先锋》中的 ECS 构架](https://link.zhihu.com/?target=https%3A//blog.codingnow.com/2017/06/overwatch_ecs.html%23more)
+
+[MarkAction关于ECS的演讲](https://www.youtube.com/watch?v=rX0ItVEVjHc)
+
