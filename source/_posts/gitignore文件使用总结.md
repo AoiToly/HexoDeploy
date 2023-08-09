@@ -10,6 +10,8 @@ tags:
 
 参考资料：[Git忽略提交规则 - .gitignore配置运维总结 - 散尽浮华 - 博客园 (cnblogs.com)](https://www.cnblogs.com/kevingrace/p/5690241.html)
 
+- 可在github官方仓库查看Unity专用的配置文件[gitignore/Unity.gitignore at main · github/gitignore](https://github.com/github/gitignore/blob/main/Unity.gitignore)
+
 **Git忽略文件的原则**
 
 - 忽略操作系统自动生成的文件，比如缩略图等；
